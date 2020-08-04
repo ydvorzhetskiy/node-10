@@ -4,12 +4,8 @@ mongoose.connect('mongodb://localhost/node-10');
 
 const db = mongoose.connection;
 
-db.on('error', err => {
-    console.error('err.message');
-});
-db.once('open', function callback() {
-    console.info("Connected to MongoDB!");
-});
+db.on('error', err => console.error('err.message'));
+db.once('open', () => console.info("Connected to MongoDB!"));
 
 
 // Schemas
@@ -26,7 +22,7 @@ const PersonSchema = new Schema({
 
 // Models
 
-const Person = mongoose.model('person', PersonSchema);
+const Person = mongoose.model('people', PersonSchema);
 
 // TODO: add other models here
 

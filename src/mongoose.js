@@ -4,7 +4,7 @@ mongoose.connect('mongodb://localhost/node-10');
 
 const db = mongoose.connection;
 
-db.on('error', function (err) {
+db.on('error', err => {
     console.error('err.message');
 });
 db.once('open', function callback() {
@@ -16,7 +16,7 @@ db.once('open', function callback() {
 
 const Schema = mongoose.Schema;
 
-const Person = new Schema({
+const PersonSchema = new Schema({
     name: {type: String, required: true},
     age: {type: Number, required: true},
 });
@@ -26,12 +26,12 @@ const Person = new Schema({
 
 // Models
 
-const PersonModel = mongoose.model('person', Person);
+const Person = mongoose.model('person', PersonSchema);
 
 // TODO: add other models here
 
 
 module.exports = {
-    PersonModel,
+    Person: Person,
     // TODO: add other models here
 };

@@ -1,53 +1,48 @@
 const express = require('express');
 const router = express.Router();
 
-const PersonModel = require('./mongoose').PersonModel;
+const Person = require('./mongoose').Person;
 
 router.get('/api/person', (req, res) => {
-    return PersonModel.find((err, persons) => {
-        if (!err) {
-            return res.send(persons);
-        } else {
-            res.statusCode = 500;
-            return res.send({error: 'Server error'});
+    Person.find((err, persons) => {
+        if (err) {
+            return res.status(500).send({error: 'Server error'});
         }
+        res.send(persons);
     });
 });
 
 router.post('/api/person', function (req, res) {
-    const person = new PersonModel({
+    /* Same as
+    const person = new Person({
         name: req.body.name,
         age: req.body.age
     });
+    */
+    const person = new Person(req.body);
 
     person.save((err) => {
-        if (!err) {
-            res.statusCode = 201;
-            return res.send(person);
-        } else {
+        if (err) {
             if (err.name === 'ValidationError') {
-                res.statusCode = 400;
-                res.send({error: 'Validation error'});
+                return res.status(400).send({error: 'Validation error'});
             } else {
-                res.statusCode = 500;
-                res.send({error: 'Server error'});
+                return res.status(500).send({error: 'Server error'});
             }
         }
+
+        res.status(200).send(person);
     });
 });
 
 router.get('/api/person/:id', function (req, res) {
-    return PersonModel.findById(req.params.id, (err, person) => {
+    Person.findById(req.params.id, (err, person) => {
+        if (err) {
+            return res.status(500).send({error: 'Server error'});
+        }
         if (!person) {
-            res.statusCode = 404;
-            return res.send({error: 'Not found'});
+            return res.status(404).send({error: 'Not found'});
         }
-        if (!err) {
-            return res.send(person);
-        } else {
-            res.statusCode = 500;
-            return res.send({error: 'Server error'});
-        }
+        res.send(person);
     });
 });
 

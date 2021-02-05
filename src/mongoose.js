@@ -1,16 +1,15 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-mongoose.connect('mongodb://localhost/node-10');
+mongoose.connect('mongodb://localhost/otus-node-10');
 
 const db = mongoose.connection;
 
-db.on('error', err => console.error('err.message'));
+db.on('error', err => console.error(err.message));
 db.once('open', () => console.info("Connected to MongoDB!"));
 
 
 // Schemas
-
-const Schema = mongoose.Schema;
 
 const PersonSchema = new Schema({
     name: {type: String, required: true},
@@ -28,6 +27,6 @@ const Person = mongoose.model('people', PersonSchema);
 
 
 module.exports = {
-    Person: Person,
+    Person,
     // TODO: add other models here
 };

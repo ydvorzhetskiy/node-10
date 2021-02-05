@@ -5,14 +5,13 @@ const Person = require('./mongoose').Person;
 
 router.get('/api/person', (req, res) => {
     Person.find((err, persons) => {
-        if (err) {
-            return res.status(500).send({error: 'Server error'});
-        }
+        if (err) return res.status(500).send({error: 'Server error'});
+
         res.send(persons);
     });
 });
 
-router.post('/api/person', function (req, res) {
+router.post('/api/person', (req, res) => {
     /* Same as
     const person = new Person({
         name: req.body.name,
@@ -25,23 +24,19 @@ router.post('/api/person', function (req, res) {
         if (err) {
             if (err.name === 'ValidationError') {
                 return res.status(400).send({error: 'Validation error'});
-            } else {
-                return res.status(500).send({error: 'Server error'});
             }
+            return res.status(500).send({error: 'Server error'});
         }
 
-        res.status(200).send(person);
+        res.status(201).send(person);
     });
 });
 
-router.get('/api/person/:id', function (req, res) {
+router.get('/api/person/:id', (req, res) => {
     Person.findById(req.params.id, (err, person) => {
-        if (err) {
-            return res.status(500).send({error: 'Server error'});
-        }
-        if (!person) {
-            return res.status(404).send({error: 'Not found'});
-        }
+        if (err) return res.status(500).send({error: 'Server error'});
+        if (!person) return res.status(404).send({error: 'Not found'});
+
         res.send(person);
     });
 });

@@ -2,10 +2,11 @@
   "private": true,
   "main": "src/server.js",
   "scripts": {
-    "start": "node src/server.js"
+    "start": "nodemon src/server.js"
   },
   "dependencies": {
     "express": "^4.17.1",
-    "mongoose": "^5.9.13"
+    "mongoose": "^5.9.13",
+    "nodemon": "^2.0.7"
   }
 }
